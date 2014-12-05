@@ -4,7 +4,9 @@ import pytest
 
 from uniq import uniq
 
-@pytest.mark.parametrize("n", range(1, 6))
+NUM_TEST_FILES = 6
+
+@pytest.mark.parametrize("n", range(1, NUM_TEST_FILES))
 def test_basic_uniq(n):
     with open('test{}'.format(n)) as f:
         output = uniq(f)
@@ -12,10 +14,11 @@ def test_basic_uniq(n):
     assert expected == output
 
 
-def test_arg():
+@pytest.mark.parametrize("n", range(1, NUM_TEST_FILES))
+def test_arg(n):
     # returns bytes
-    output = check_output(["./uniq.py", "./test1"])
-    assert open('expected1', 'bU').read() == output
+    output = check_output(["./uniq.py", "./test{}".format(n)])
+    assert open('expected{}'.format(n), 'bU').read() == output
 
 def test_stdin():
     # returns bytes
