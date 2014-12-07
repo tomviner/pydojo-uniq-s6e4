@@ -1,1 +1,1 @@
-python output_sleep.py | ./uniq.py
+python print_sleep_print.py | ./uniq.py

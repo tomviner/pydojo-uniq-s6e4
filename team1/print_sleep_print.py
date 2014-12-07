@@ -1,6 +1,6 @@
 import time
 
-def printlots():
+def print_lots():
     """
     print more than 8K
     with some dups
@@ -12,8 +12,8 @@ def printlots():
         print('bar\n', end='')
     print('end\n', end='')
 
-printlots()
+print_lots()
 
 time.sleep(2)
 
-printlots()
+print_lots()
