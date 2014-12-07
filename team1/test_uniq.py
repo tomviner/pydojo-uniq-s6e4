@@ -35,6 +35,11 @@ def test_stdin():
     assert open('expected1', 'bU').read() == output
 
 def test_streamed():
+    """Test passing in data to the process's stdin
+
+    And receiving data from it's stdout
+    Code based on http://stackoverflow.com/a/13605804/15890
+    """
     master, slave = pty.openpty()
     process = Popen("python uniq.py", shell=True, stdin=PIPE, stdout=slave)
     stdin_handle = process.stdin
