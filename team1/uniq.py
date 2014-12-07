@@ -1,18 +1,19 @@
 #! /usr/bin/env python
 from unicodedata import normalize
-
 import fileinput
-import os
+
+
+def uniq_list(f=None):
+    return list(uniq(f))
 
 def uniq(f=None):
-    results = []
     previous = None
     for line in f or fileinput.input():
         line = line.rstrip()
         if normalize('NFKC', line) != previous:
-            results.append(line)
+            yield line
             previous = normalize('NFKC', line)
-    return results
 
 if __name__ == '__main__':
-    print(os.linesep.join(uniq()))
+    for line in uniq():
+        print(line)
