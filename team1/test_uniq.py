@@ -46,6 +46,7 @@ def test_streamed():
     stdout_handle = os.fdopen(master)
     # Now, we can communicate to the subprocess without closing
 
+    # arbitary end of file marker
     EOF = '\x04'
     bEOF = EOF.encode('utf-8')
     # write more than 8K here, as that seemed to be the buffer size
