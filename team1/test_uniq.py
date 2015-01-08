@@ -46,28 +46,23 @@ def test_streamed():
     stdout_handle = os.fdopen(master)
     # Now, we can communicate to the subprocess without closing
 
-    # arbitary end of file marker
-    EOF = '\x04'
-    bEOF = EOF.encode('utf-8')
-    # write more than 8K here, as that seemed to be the buffer size
+    # Write more than 8K here, as that seemed to be the buffer size
     # of pipes on my laptop
     stdin_handle.write(b'bar\n' * 1024)
     stdin_handle.write(b'foo\n' * 1024)
     stdin_handle.write(b'bar\n' * 2048)
     stdin_handle.write(b'foo\n' * 1024)
     stdin_handle.write(b'end\n')
-    # We have to send a known "end character" here, and check
-    # for it later. Also add \n because we're using readline
-    stdin_handle.write(bEOF + b'\n')
     stdin_handle.close()
+    os.close(slave)
 
     expected = ['bar\n', 'foo\n', 'bar\n', 'foo\n', 'end\n']
     result = []
-    while True:
-        line = stdout_handle.readline()
-        if EOF in line:
-            # break because any further reading blocks now
-            break
-        result.append(line)
+    try:
+        for line in stdout_handle:
+            result.append(line)
+    except OSError:
+        # we get an OSError at the end of the output
+        pass
 
     assert expected == result
