@@ -42,6 +42,7 @@ def test_streamed():
     """
     master, slave = pty.openpty()
     process = Popen("python uniq.py", shell=True, stdin=PIPE, stdout=slave)
+    os.close(slave)
     stdin_handle = process.stdin
     stdout_handle = os.fdopen(master)
     # Now, we can communicate to the subprocess without closing
@@ -54,7 +55,6 @@ def test_streamed():
     stdin_handle.write(b'foo\n' * 1024)
     stdin_handle.write(b'end\n')
     stdin_handle.close()
-    os.close(slave)
 
     expected = ['bar\n', 'foo\n', 'bar\n', 'foo\n', 'end\n']
     result = []
