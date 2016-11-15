@@ -31,13 +31,13 @@ def test_arg(filenames):
 
 def test_stdin():
     # returns bytes
-    output = check_output("cat ./test1 | ./uniq.py", shell=1)
+    output = check_output("cat ./test1 | ./uniq.py", shell=True)
     assert open('expected1', 'bU').read() == output
 
 def test_streamed():
-    """Test passing in data to the process's stdin
+    """Test passing in data to the process's stdin.
 
-    And receiving data from it's stdout
+    And receiving data from its stdout
     Code based on http://stackoverflow.com/a/13605804/15890
     """
     master, slave = pty.openpty()
@@ -45,7 +45,7 @@ def test_streamed():
     os.close(slave)
     stdin_handle = process.stdin
     stdout_handle = os.fdopen(master)
-    # Now, we can communicate to the subprocess without closing
+    # Now we can communicate to the subprocess without closing
 
     # Write more than 8K here, as that seemed to be the buffer size
     # of pipes on my laptop
